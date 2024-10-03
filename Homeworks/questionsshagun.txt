@@ -1,0 +1,13 @@
+1. What are 3-5 (or more) commands that you can usie on terminal and what do they do? What language is your computer terminal in?
+-pwd can be used to see what directory you're in
+-ls is used to see the contents of the directory you are in
+-git clone is used to add a repository to your terminal or copy one that already exists.
+2. Do you have pets? What kind? I have a dog his name is Charm!!!!
+
+3. If you run across an error, what would your first course of action be? My first course of action would be to check my bugs and debug.
+
+4. Funniest thing that happened to you in high school. Graduation.
+
+5. What is a python script? (Keep it simple)
+It is a computer code.
+
