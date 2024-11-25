@@ -1,0 +1,81 @@
+#1 Curve Fitted Guided Problem
+#The data was not downloading on my computer and everytime I ran it, it showed an error so throughout this assignment I will be making educated guesses on what the graph might look like...
+import pandas as pd
+df = pd.read_csv('GlobalLandTemperaturesByState.csv')
+df_filtered = df[['date', 'AverageTemperature', 'State']]
+df_filtered['date'] = pd.to_datetime(df_filtered['date'], format='%Y-%m-%d')
+df_filtered = df_filtered[df_filtered['date'].dt.year > 2000]
+df_filtered = df_filtered[df_filtered['State'].isin(['Wyoming', 'Nebraska', 'South Dakota'])]
+df_filtered.shape  
+df_grouped = df_filtered.groupby('date')['AverageTemperature'].mean().reset_index()
+
+import matplotlib.pyplot as plt
+plt.figure()
+plt.plot(df_grouped['date'], df_grouped['AverageTemperature'], label='Average Temperature')
+plt.title('Average Temperature for Wyoming, Nebraska, and South Dakota')
+plt.xlabel('Date')
+plt.ylabel('Average Temperature (°C)')
+plt.legend()
+plt.show()
+df_grouped['date'] = pd.to_datetime(df_grouped['date'])
+df_grouped['days_since_start'] = (df_grouped['date'] - df_grouped['date'].min()).dt.days
+
+def model(x, A, T, phi, B):
+    return A * np.cos(2 * np.pi * x / T + phi) + B
+params, covariance = curve_fit(model, df_grouped['days_since_start'], df_grouped['AverageTemperature'], p0=initialguess)
+#Again I was unable to download the dataset so I just left p0 as initialguess
+plt.figure()
+plt.plot(df_grouped['date'], df_grouped['AverageTemperature'], label='Data', color='blue')
+fitted_curve = model(df_grouped['days_since_start'], *params)
+plt.plot(df_grouped['date'], fitted_curve, label='Fitted Curve', color='red', linestyle='--')
+plt.title('Average Temperature for Wyoming, Nebraska, and South Dakota')
+plt.xlabel('Date')
+plt.ylabel('Average Temperature (°C)')
+plt.legend()
+plt.show()
+
+cov
+y = df['mean']
+x = df['date']
+chi2 = sum(y - cubic(x, params[0], params[1], params[2], params[3],)// df['unc']**2)
+chi2//(len(y) - 4)
+
+#2 Random Plotting Practice
+import numpy as np
+import matplotlib.pyplot as plt
+list1 = np.random.randint(0, 201, 50)
+list2 = np.random.randint(0, 201, 50)
+list3 = np.random.randint(0, 201, 50)
+fig, axs = plt.subplots(1, 2, figsize=(12, 6))
+axs[0].plot(list1, color='blue', linewidth=5, label='List 1 - Blue Line')
+axs[0].plot(list2, color='green', linestyle=':', label='List 2 - Green Dotted Line')
+axs[0].set_title('Line Plot of List 1 and List 2')
+axs[0].legend()
+axs[1].scatter(range(len(list3)), list3, color='purple', marker='^', label='List 3 - Purple Triangles')
+axs[1].set_title('Scatter Plot of List 3')
+axs[1].legend()
+plt.show()
+
+#3 Monte Carlo
+import numpy as np
+import matplotlib.pyplot as plt
+def estimate_pi(N):
+    x = np.random.rand(N)
+    y = np.random.rand(N)
+    distance = x**2 + y**2
+    inside_circle = distance <= 1
+    pi_estimate = 4 * np.sum(inside_circle) / N
+    return pi_estimate, x, y, inside_circle
+N_values = [10, 100, 1000, 10000, 100000, 1000000]
+N = 10000
+pi_estimate, x, y, inside_circle = estimate_pi(N)
+plt.figure(figsize=(6, 6))
+plt.scatter(x[inside_circle], y[inside_circle], color='green', s=1, label='Inside Quarter Circle')
+plt.scatter(x[inside_circle], y[inside_circle], color='red', s=1, label='Outside Quarter Circle')
+plt.title('Monte Carlo Estimation of π')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend()
+plt.axis('equal')
+plt.show()
+#It didn't really work and I'm not sure what to do honestly!
